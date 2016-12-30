@@ -1,2 +1,2 @@
 # say-may-name
-A spring-boot micro-service.
+A spring-boot microservice to demonstrate docker container orchestration using a hosted kubernetes cluster on Google Cloud's Container Engine.
