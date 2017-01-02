@@ -28,7 +28,7 @@ public class SayMyNameController {
 
     @RequestMapping("/**")
     public String getAll() throws NoSuchMethodException {
-        logger.error("This endpoint is not found.");
+        logger.error("This endpoint is not found!");
         if (true)
             throw new NoSuchMethodException();
         return "Get all resources";
