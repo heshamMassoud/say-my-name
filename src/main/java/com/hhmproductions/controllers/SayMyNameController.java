@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * Created by heshammassoud on 30/12/16.
@@ -17,8 +19,11 @@ public class SayMyNameController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping("/{name}")
-    public String index(@PathVariable String name) {
-        return "Hi " + name +  "! :)";
+    public String index(@PathVariable String name) throws UnknownHostException {
+        String hostName = InetAddress.getLocalHost().getHostName();
+        String hostAddress = InetAddress.getLocalHost().getHostAddress();
+
+        return "Hi " + name + "! :) It's " + hostName + ":" + hostAddress;
     }
 
     @RequestMapping("/**")
