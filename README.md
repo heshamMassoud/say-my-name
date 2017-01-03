@@ -71,7 +71,7 @@ Using the kubernetes resource labels e.g.
     role: frontend
     env: staging
 ````
-Through the Google console's[Stackdriver](https://app.google.stackdriver.com/monitoring/1039756/say-my-name-cpu-and-disk-usage?project=say-my-name-154414)
+Through the Google console's [Stackdriver](https://app.google.stackdriver.com/monitoring/1039756/say-my-name-cpu-and-disk-usage?project=say-my-name-154414)
 you can choose a label or a combination of labels to monitor the nodes your pods are running on, as seen in the screenshot below. You can monitor the CPU usage of all nodes running production pods by simply filtering by the label `env: production`
 or aggregate the average CPU usage of nodes exposing the production frontend pods for example.
 ![screen shot 2017-01-03 at 21 06 48](https://cloud.githubusercontent.com/assets/9512131/21621291/a18d7cba-d1f8-11e6-9a02-8849eaad9160.png)
@@ -82,9 +82,8 @@ as seen in the screenshot below.
 ![screen shot 2017-01-03 at 21 26 01](https://cloud.githubusercontent.com/assets/9512131/21623320/17abce16-d202-11e6-93c7-8708a6fe1e2a.png)
 ![screen shot 2017-01-03 at 21 25 30 1](https://cloud.githubusercontent.com/assets/9512131/21623321/17acc6ea-d202-11e6-80db-96033f95149c.png)
 
-###Error Reporting and Logging
 To fully utilize the advantages of stack driver's error reporting and logging, one has to use one of the client
-libraries provided by google which are still in[beta](https://cloud.google.com/error-reporting/docs/setup/compute-engine#log_exceptions)
+libraries provided by google which are still in [beta](https://cloud.google.com/error-reporting/docs/setup/compute-engine#log_exceptions)
 and not recommended for production purposes. 
  
 
