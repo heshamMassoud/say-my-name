@@ -48,15 +48,40 @@ both environments would have the same namespace and only updating the staging co
 ####Jenkins Multi-branched Pipeline
 <img width="880" alt="screen shot 2017-01-03 at 19 12 56" src="https://cloud.githubusercontent.com/assets/9512131/21618084/80643c54-d1e9-11e6-9c28-265f714081bc.png">
 
+
+###Scaling
+#####Manual horizontal scaling of production environment pods
+```bash
+kubectl --namespace=production scale deployment say-my-name-frontend-production --replicas=4
+```
+#####Horizonal Pod Autoscaling in Kubernetes
+With Horizontal Pod Autoscaling, Kubernetes automatically scales the number of pods in a replication controller, deployment or replica set based on observed CPU utilization (or, with alpha support, on some other, application-provided metrics).
+The autoscalar periodically queries CPU utilization for the pods it targets. (The period of the autoscaler is controlled by `--horizontal-pod-autoscaler-sync-period` flag of controller manager. The default value is 30 seconds). Then, it compares the arithmetic mean of the pods’ CPU utilization with the target and adjust the number of replicas if needed.
+
+The following command will create a Horizontal Pod Autoscaler that maintains between 2 and 10 replicas of the Pods controlled by the
+`say-my-name-frontend-production` deployment.
+```bash
+kubectl --namespace=production autoscale deployment say-my-name-frontend-production --cpu-percent=50 --min=2 --max=10
+```
+To check the status of the autoscaler run:
+```bash
+kubectl get hpa
+```
+HPA scales up or down the number of replicas according to the specified percentage compared to the actual load.
+
+#####Cluster Autoscaling in GKE
+
+Cluster Autoscaler enables users to automatically resize clusters so that all scheduled pods have a place to run.
+ If there are no resources in the cluster to schedule a recently created pod, a new node is added. On the other hand, 
+ if some node is underutilized and all pods running on it can be easily moved elsewhere then the node is deleted.
+ Feature is, however, still in [beta](https://cloud.google.com/container-engine/docs/cluster-autoscaler).
+
 ####Useful commands
 #####Manually setup a kubernetes .yaml deployment
 ```bash
 kubectl --namespace=staging apply -f k8s/deployments/staging/
 ```
-#####Manual horizontal scaling of production environment pods
-```bash
-kubectl --namespace=production scale deployment say-my-name-frontend-production --replicas=4
-```
+
 #####Status of created services and pods
 ```bash
 kubectl --namespace="staging" get services
@@ -93,4 +118,4 @@ and not recommended for production purposes.
 
 ##Dynamic Configuration
 
-
+Using the kubernetes [environment variables expanstion](http://kubernetes.io/docs/user-guide/configuring-containers/#environment-variables-and-variable-expansion) you can easily set the environment variables for every container. A typical use case is to add a set of environment variables for our `env: production` pods different than that of the `env: staging` pods. 
