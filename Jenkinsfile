@@ -9,7 +9,9 @@ node {
   step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
 
   stage "Build docker image"
-  def app = docker.build "heshamm/say-my-name:${POM_VERSION}"
+  def pomFile = readMavenPom file: 'pom.xml'
+  def appVersion = pom.version
+  def app = docker.build "heshamm/say-my-name:${appVersion}"
 
   stage "Publish docker images to docker registry"
   docker.withRegistry("https://registry.hub.docker.com", "docker-registry") {
