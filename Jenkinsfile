@@ -9,7 +9,7 @@ node {
   step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
 
   stage "Build docker image"
-  def pomFile = readMavenPom file: 'pom.xml'
+  def pom = readMavenPom file: 'pom.xml'
   def appVersion = pom.version
   def app = docker.build "heshamm/say-my-name:${appVersion}"
 
