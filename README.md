@@ -13,6 +13,7 @@ A spring-boot microservice to demonstrate docker container orchestration using a
 7. Monitoring and logging using Stackdriver.
 8. Dynamic Configuration.
 9. Advantages of using Kubernetes on GKE.
+
 ###Bird's Eye View
 
 
