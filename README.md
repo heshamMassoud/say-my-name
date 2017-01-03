@@ -45,7 +45,7 @@ selector:
 It is also possible to have the staging environment set as a canary release environment, in which case 
 both environments would have the same namespace and only updating the staging container images. This would lead, for example,
  to having a new update seen by 20% of the users and if it's okay, it can be rolled out to the production pods.
-####Jenkins Multi-branched Pipeline
+###Jenkins Multi-branched Pipeline
 When code is pushed on github to the staging branch a build is triggered on Jenkins with the following stages, based
  on the [Jenkinsfile](https://github.com/heshamMassoud/say-my-name/blob/master/Jenkinsfile), as seen in the screenshot below:
  
@@ -89,18 +89,18 @@ Cluster Autoscaler enables users to automatically resize clusters so that all sc
  if some node is underutilized and all pods running on it can be easily moved elsewhere then the node is deleted.
  Feature is, however, still in [beta](https://cloud.google.com/container-engine/docs/cluster-autoscaler).
 
-####Useful commands
-#####Manually setup a kubernetes .yaml deployment
+###Useful commands
+####Manually setup a kubernetes .yaml deployment
 ```bash
 kubectl --namespace=staging apply -f k8s/deployments/staging/
 ```
 
-#####Status of created services and pods
+####Status of created services and pods
 ```bash
 kubectl --namespace="staging" get services
 kubectl --namespace="staging" get pods
 ```
-#####Details of created services and pods
+####Details of created services and pods
 ```bash
 kubectl --namespace="staging" describe services
 kubectl --namespace="staging" describe pods
