@@ -100,7 +100,7 @@ Using the kubernetes resource labels e.g.
     role: frontend
     env: staging
 ````
-Through the Google console's [Stackdriver](https://app.google.stackdriver.com/monitoring/1039756/say-my-name-cpu-and-disk-usage?project=say-my-name-154414)
+Through the Google console [Stackdriver](https://app.google.stackdriver.com/monitoring/1039756/say-my-name-cpu-and-disk-usage?project=say-my-name-154414)
 you can choose a label or a combination of labels to monitor the nodes your pods are running on, as seen in the screenshot below. You can monitor the CPU usage of all nodes running production pods by simply filtering by the label `env: production`
 or aggregate the average CPU usage of nodes exposing the production frontend pods for example.
 ![screen shot 2017-01-03 at 21 06 48](https://cloud.githubusercontent.com/assets/9512131/21621291/a18d7cba-d1f8-11e6-9a02-8849eaad9160.png)
