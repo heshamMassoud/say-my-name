@@ -27,7 +27,8 @@ node {
             sh("sed -i.bak 's#heshamm/say-my-name:latest#${imageTag}#' ./k8s/services/staging/*.yaml")
             sh("kubectl --namespace=production apply -f k8s/services/staging")
             sh("kubectl --namespace=production apply -f k8s/deployments/staging")
-            sh("echo http://`kubectl --namespace=staging get service/say-my-name-frontend-staging --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
+            def serviceName = "say-my-name-frontend-staging"
+            sh("echo http://`kubectl --namespace=staging get service/${serviceName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${serviceName}")
             break
         case "master":
             dockerImage.push 'production'
@@ -38,7 +39,8 @@ node {
             sh("sed -i.bak 's#heshamm/say-my-name:latest#${imageTag}#' ./k8s/services/production/*.yaml")
             sh("kubectl --namespace=staging apply -f k8s/services/production")
             sh("kubectl --namespace=staging apply -f k8s/deployments/production")
-            sh("echo http://`kubectl --namespace=production get service/say-my-name-frontend-production --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
+            def serviceName = "say-my-name-frontend-production"
+            sh("echo http://`kubectl --namespace=production get service/${serviceName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${serviceName}")
             break
       }
   }
