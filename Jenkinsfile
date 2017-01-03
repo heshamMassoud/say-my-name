@@ -11,31 +11,33 @@ node {
   stage "Build docker image"
   def pom = readMavenPom file: 'pom.xml'
   def appVersion = pom.version
-  def app = docker.build "heshamm/say-my-name:${appVersion}"
+  def imageTag = "heshamm/say-my-name:${appVersion}"
+  def dockerImage = docker.build imageTag
 
   stage "Publish docker images to docker registry"
   docker.withRegistry("https://registry.hub.docker.com", "docker-registry") {
-      app.push()
+      dockerImage.push()
       switch (env.BRANCH_NAME) {
         case "staging":
-            app.push 'latest'
-            break
-
-        case "master":
-            app.push 'production'
-            break
-
-        // Roll out a dev environment
-        default:
+            dockerImage.push 'staging'
+            stage "Deploying images to Kubernetes cluster"
             // Create namespace if it doesn't exist
-            sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
-            // Don't use public load balancing for development branches
-            sh("sed -i.bak 's#LoadBalancer#ClusterIP#' ./k8s/services/frontend.yaml")
-            sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${imageTag}#' ./k8s/dev/*.yaml")
-            sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/services/")
-            sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/dev/")
-            echo 'To access your environment run `kubectl proxy`'
-            echo "Then access your service via http://localhost:8001/api/v1/proxy/namespaces/${env.BRANCH_NAME}/services/${feSvcName}:80/"
+            sh("kubectl get ns staging || kubectl create ns staging")
+            sh("sed -i.bak 's#heshamm/say-my-name:latest#${imageTag}#' ./k8s/staging/*.yaml")
+            sh("kubectl --namespace=production apply -f k8s/services/staging")
+            sh("kubectl --namespace=production apply -f k8s/deployments/staging")
+            sh("echo http://`kubectl --namespace=staging get service/say-my-name-frontend-staging --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
+            break
+        case "master":
+            dockerImage.push 'production'
+            stage "Deploying images to Kubernetes cluster"
+            // Create namespace if it doesn't exist
+            sh("kubectl get ns production || kubectl create ns production")
+            sh("sed -i.bak 's#heshamm/say-my-name:latest#${imageTag}#' ./k8s/production/*.yaml")
+            sh("kubectl --namespace=production apply -f k8s/services/production")
+            sh("kubectl --namespace=production apply -f k8s/deployments/production")
+            sh("echo http://`kubectl --namespace=production get service/say-my-name-frontend-production --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
+            break
       }
   }
 }
