@@ -1,24 +1,23 @@
 node {
-  // Mark the code checkout 'stage'....
   stage 'Checkout'
   checkout scm
 
-  // Get the maven tool.
-  // ** NOTE: This 'M3' maven tool must be configured
-  // **       in the global configuration.
   def mvnHome = tool 'M3'
 
-  // Mark the code build 'stage'....
-  stage 'Build'
-  // Run the maven build
+  stage 'Build the JAR'
   sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean package"
   step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
 
-  // Mark the code deploy 'stage'....
+  stage "Build the docker image"
+  def app = docker.build "heshamm/say-my-name:${env.BUILD_NUMBER}"
+
   stage "Deploy Application"
   switch (env.BRANCH_NAME) {
     // Roll out to staging
     case "staging":
+        stage 'Publish docker image'
+        app.push 'latest'
+
         // Change deployed image in staging to the one we just built
         sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${imageTag}#' ./k8s/staging/*.yaml")
         sh("kubectl --namespace=production apply -f k8s/services/")
@@ -28,7 +27,9 @@ node {
 
     // Roll out to production
     case "master":
-        // Change deployed image in staging to the one we just built
+        stage 'Publish docker image'
+        app.push 'production'
+
         break
 
     // Roll out a dev environment
