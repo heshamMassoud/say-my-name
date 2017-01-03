@@ -16,9 +16,6 @@ A spring-boot microservice to demonstrate docker container orchestration using a
 
 ###Bird's Eye View
 
-
-#####Development workflow and release to production (and how to switch it to canary-releasing).
-
 ####Environment Isolation
 Currently the staging environment is totally isolated from the production environment using kubernetes namespaces to
 have pod-level isolation
