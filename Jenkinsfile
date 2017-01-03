@@ -8,10 +8,10 @@ node {
   sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean package"
   step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
 
-  stage "Build the docker image"
+  stage "Build docker image"
   def app = docker.build "heshamm/say-my-name:${env.BUILD_NUMBER}"
 
-  stage "Publish docker images"
+  stage "Publish docker images to docker registry"
   docker.withRegistry("https://registry.hub.docker.com", "docker-registry") {
       app.push()
       switch (env.BRANCH_NAME) {
