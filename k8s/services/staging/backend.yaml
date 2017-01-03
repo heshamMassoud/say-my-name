@@ -1,7 +1,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: say-my-name-backend
+  name: say-my-name-backend-staging
 spec:
   ports:
   - name: http
@@ -11,3 +11,4 @@ spec:
   selector:
     role: backend
     app: say-my-name
+    env: staging
