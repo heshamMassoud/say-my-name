@@ -8,7 +8,7 @@ Staging: http://130.211.93.195/say/there
 
 
 ###What the Prototype Covers
-1. A deployed instance of Jenkins server on a Kubernetes cluster.
+1. A deployed instance of Jenkins server on a GKE (Google Container Engine) Kubernetes cluster.
 2. Setup of a multi-branched pipeline on Jenkins.
 3. Setup of a production and staging environment for the microservice on the kubernetes cluster.
 4. Development workflow and release to production (and how to switch it to canary-releasing).
@@ -119,3 +119,54 @@ and not recommended for production purposes.
 ##Dynamic Configuration
 
 Using the kubernetes [environment variables expanstion](http://kubernetes.io/docs/user-guide/configuring-containers/#environment-variables-and-variable-expansion) you can easily set the environment variables for every container. A typical use case is to add a set of environment variables for our `env: production` pods different than that of the `env: staging` pods. 
+
+##GAE vs GKE vs Self-managed Kubernetes
+ 
+####GAE: Google App Engine
+Google App Engine is a PAAS (**not** a container orchestration tool). It only provides a predefined stack of software per setup. This shouldn't be a solution 
+since Google App Engine is a PAAS. It only provides a predefined stack of software per setup.Hardware and infrastructure
+are managed by google. 
+Features:
+- Automatic scaling and load balancing
+- Traffic splitting: Incremental deployments, easy rolling back
+- No server maintenance
+- Simply upload the application and run it
+- Takes advantages of compute engine
+- Background/ scheduled tasks.
+
+Two types of environments with Google App Engine: Standard and Flexible.
+
+**Standard**
+ - Managed runtimes. (Java7, Python 2/7, Go and PHP) 
+ - Can't write to Local file system
+
+**Flexible**
+ - Java8, node.js, ruby and GO (not sandboxed)
+ - ssh into instances
+ - you can use docker containers
+ - Still Beta and should not be used in production systems.
+Read more about [here](https://cloud.google.com/appengine/docs/whatisgoogleappengine)
+
+One more important distinction: projects running on App Engine can scale down to zero instances if no requests are 
+coming in. This is extremely useful at the development stage as you can go for weeks without going over the generous 
+free quota of instance-hours. Flexible runtime (i.e. "managed VMs") require at least one instance to run constantly.
+
+####GKE: Google Container Engine
+
+GKE, on the other hand, is an IAAS. It is the combination of Docker, Kubernetes and Google's expertise in cluster 
+management and container orchestration.
+
+#####Main features and advantages:
+
+1. You don't need to spend time and effort managing kubernetes (leave that to google) and instead actually use it. Don't need 
+   to worry about the Kubernetes master node going down. GKE guarantees master node’s uptime.
+2. Easily instantiate a kubernetes installation with a custome configured cluster, with 1-click, through the google 
+console UI.
+3. Don't have to worry about etcd, how many nodes to fire up for a cluster, or whether it should be on the same node as 
+kubernetes master. GKE guarntees etcd's uptime.
+4. Managing authentication and authorization is much easier using the Google Cloud projects' IAM.
+5. Cluster autoscaling
+6. Without GKE to update Kubernetes, you would have to fireup a new cluster with latest kubernetes release and then move the pods
+to the new cluster. However, with GKE its done with one command.
+7. Heapster tool for monitoring is pre-installed with the GKE cluster. 
+8. Stackdriver's monitoring and logging has support for cluster level logging. 
