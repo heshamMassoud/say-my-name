@@ -1,0 +1,29 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: say-my-name-frontend-production
+spec:
+  replicas:
+  template:
+    metadata:
+      name: frontend
+      labels:
+        app: say-my-name
+        role: frontend
+        env: production
+    spec:
+      containers:
+      - name: frontend
+        image: heshamm/say-my-name:latest
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "100m"
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+        ports:
+        - name: frontend
+          containerPort: 8080

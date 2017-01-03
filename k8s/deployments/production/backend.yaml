@@ -1,0 +1,29 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: say-my-name-backend-production
+spec:
+  replicas:
+  template:
+    metadata:
+      name: backend
+      labels:
+        app: say-my-name
+        role: backend
+        env: production
+    spec:
+      containers:
+      - name: backend
+        image: heshamm/say-my-name:latest
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "100m"
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+        ports:
+        - name: backend
+          containerPort: 8080

@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: say-my-name-frontend-production
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app: say-my-name
+    role: frontend
+    env: production
