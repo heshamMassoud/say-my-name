@@ -93,4 +93,4 @@ and not recommended for production purposes.
 
 ##Dynamic Configuration
 
-
+Using the kubernetes [environment variables expanstion](http://kubernetes.io/docs/user-guide/configuring-containers/#environment-variables-and-variable-expansion) you can easily set the environment variables for every container. A typical use case is to add a set of environment variables for our `env: production` pods different than that of the `env: staging` pods. 
