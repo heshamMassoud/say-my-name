@@ -65,4 +65,6 @@ kubectl --namespace="staging" get pods
 kubectl --namespace="staging" describe services
 kubectl --namespace="staging" describe pods
 ```
+#####Monitoring
+![screen shot 2017-01-03 at 21 06 48](https://cloud.githubusercontent.com/assets/9512131/21621291/a18d7cba-d1f8-11e6-9a02-8849eaad9160.png)
 
