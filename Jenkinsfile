@@ -36,8 +36,8 @@ node {
             sh("kubectl get ns production || kubectl create ns production")
             sh("sed -i.bak 's#heshamm/say-my-name:latest#${imageTag}#' ./k8s/deployments/production/*.yaml")
             sh("sed -i.bak 's#heshamm/say-my-name:latest#${imageTag}#' ./k8s/services/production/*.yaml")
-            sh("kubectl --namespace=production apply -f k8s/services/production")
-            sh("kubectl --namespace=production apply -f k8s/deployments/production")
+            sh("kubectl --namespace=staging apply -f k8s/services/production")
+            sh("kubectl --namespace=staging apply -f k8s/deployments/production")
             sh("echo http://`kubectl --namespace=production get service/say-my-name-frontend-production --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
             break
       }
