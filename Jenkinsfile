@@ -13,7 +13,7 @@ node {
 
   stage "Publish docker images"
   docker.withRegistry("https://registry.hub.docker.com", "docker-registry") {
-      app.push
+      app.push()
       switch (env.BRANCH_NAME) {
         case "staging":
             app.push 'latest'
