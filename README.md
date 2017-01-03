@@ -17,6 +17,8 @@ A spring-boot microservice to demonstrate docker container orchestration using a
 
 
 #####Development workflow and release to production (and how to switch it to canary-releasing).
+
+####Environment Isolation
 Currently the staging environment is totally isolated from the production environment using kubernetes namespaces to
 have pod-level isolation
 ```bash
@@ -42,6 +44,8 @@ selector:
 However, it is possible to have the staging environment set as a canary release environment, in which case 
 both environments would have the same namespace and only updating the staging container images. This would lead, for example,
  to having a new update seen by 20% of the users and if it's okay, it can be rolled out to the production pods.
+####Jenkins Multi-branched Pipeline
+
 #####Manually setup a kubernetes .yaml deployment
 ```bash
 kubectl --namespace=staging apply -f k8s/deployments/staging/
