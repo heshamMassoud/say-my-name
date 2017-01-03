@@ -16,8 +16,10 @@ node {
     // Roll out to staging
     case "staging":
         stage 'Publish docker image'
-        docker login -u '${env.DOCKER_USERNAME}' -p '${env.DOCKER_PASSWORD}'
-        app.push 'latest'
+        docker.withRegistry("https://registry.hub.docker.com", "docker-registry") {
+            app.push 'latest'
+        }
+
 
         // Change deployed image in staging to the one we just built
         sh("sed -i.bak 's#gcr.io/cloud-solutions-images/gceme:1.0.0#${imageTag}#' ./k8s/staging/*.yaml")
