@@ -16,6 +16,7 @@ node {
     // Roll out to staging
     case "staging":
         stage 'Publish docker image'
+        docker login -u="${env.DOCKER_USERNAME}" -p="${env.DOCKER_PASSWORD}"
         app.push 'latest'
 
         // Change deployed image in staging to the one we just built
