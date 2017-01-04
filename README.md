@@ -18,6 +18,7 @@ Staging: http://130.211.93.195/say/there
 8. Advantages of using Kubernetes and/or Kubernetes on GKE.
 
 ###Bird's Eye View
+![say-my-name-birds-eye](https://cloud.githubusercontent.com/assets/9512131/21627687/cbf7da7e-d219-11e6-933e-34e9da3c4abd.png)
 
 ###Environment Isolation
 Currently the staging environment is totally isolated from the production environment using kubernetes namespaces to
