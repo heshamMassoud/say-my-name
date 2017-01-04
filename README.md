@@ -180,7 +180,7 @@ console UI.
 3. Don't have to worry about etcd, how many nodes to fire up for a cluster, or whether it should be on the same node as 
 kubernetes master. GKE guarntees etcd's uptime.
 4. Managing authentication and authorization is much easier using the Google Cloud projects' IAM.
-5. Cluster autoscaling
+5. Cluster autoscaling **beta**
 6. Without GKE to update Kubernetes, you would have to fireup a new cluster with latest kubernetes release and then move the pods
 to the new cluster. However, with GKE its done with one command.
 7. Heapster tool for monitoring is pre-installed with the GKE cluster. 
