@@ -152,13 +152,14 @@ Two types of environments with Google App Engine: Standard and Flexible.
 
 **Standard**
  - Managed runtimes. (Java7, Python 2/7, Go and PHP) 
- - Can't write to Local file system
+ - Can't write to Local file system 
+ - *Kubernetes Cluster can't be configured*
 
 **Flexible**
  - Java8, node.js, ruby and GO (not sandboxed)
  - ssh into instances
  - you can use docker containers
- - Still Beta and should not be used in production systems.
+ - **Still Beta** and should not be used in production systems.
 Read more about [here](https://cloud.google.com/appengine/docs/whatisgoogleappengine)
 
 One more important distinction: projects running on App Engine can scale down to zero instances if no requests are 
