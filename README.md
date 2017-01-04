@@ -46,7 +46,20 @@ selector:
 It is also possible to have the staging environment set as a canary release environment, in which case 
 both environments would have the same namespace and only updating the staging container images. This would lead, for example,
  to having a new update seen by 20% of the users and if it's okay, it can be rolled out to the production pods.
-####Jenkins Multi-branched Pipeline
+###Jenkins Multi-branched Pipeline
+When code is pushed on github to the staging branch a build is triggered on Jenkins with the following stages, based
+ on the [Jenkinsfile](https://github.com/heshamMassoud/say-my-name/blob/master/Jenkinsfile), as seen in the screenshot below:
+ 
+ 1. Checkout the code from the github repo.
+ 2. Maven compiles, tests and packages the microservice into a JAR file.
+ 3. Based on the [Dockerfile](https://github.com/heshamMassoud/say-my-name/blob/master/Dockerfile) an image is built.
+ 4. The docker image build is pushed (with several tags) to the specified container registry.
+ 5. Based on the [Kubernetes resources' yaml files](https://github.com/heshamMassoud/say-my-name/tree/master/k8s), the images are deployed on the `staging` namespaced cluster.
+ 
+When the code is pushed to the master branch the steps are executed, except the docker images are deployed on the 
+`production` namespace.
+
+
 <img width="880" alt="screen shot 2017-01-03 at 19 12 56" src="https://cloud.githubusercontent.com/assets/9512131/21618084/80643c54-d1e9-11e6-9c28-265f714081bc.png">
 
 
@@ -77,18 +90,18 @@ Cluster Autoscaler enables users to automatically resize clusters so that all sc
  if some node is underutilized and all pods running on it can be easily moved elsewhere then the node is deleted.
  Feature is, however, still in [beta](https://cloud.google.com/container-engine/docs/cluster-autoscaler).
 
-####Useful commands
-#####Manually setup a kubernetes .yaml deployment
+###Useful commands
+####Manually setup a kubernetes .yaml deployment
 ```bash
 kubectl --namespace=staging apply -f k8s/deployments/staging/
 ```
 
-#####Status of created services and pods
+####Status of created services and pods
 ```bash
 kubectl --namespace="staging" get services
 kubectl --namespace="staging" get pods
 ```
-#####Details of created services and pods
+####Details of created services and pods
 ```bash
 kubectl --namespace="staging" describe services
 kubectl --namespace="staging" describe pods
