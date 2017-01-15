@@ -128,6 +128,16 @@ as seen in the screenshot below.
 To fully utilize the advantages of stack driver's error reporting and logging, one has to use one of the client
 libraries provided by google which are still in [beta](https://cloud.google.com/error-reporting/docs/setup/compute-engine#log_exceptions)
 and not recommended for production purposes. 
+
+We don't need to use the [beta](https://cloud.google.com/error-reporting/docs/setup/compute-engine#log_exceptions) client 
+libraries provided by google. Fluentd log collector (alternative to Logstash in an ELK stack) is already pre installed
+by the GKE in the Kubernetes cluster. In order to correctly utilize error reporting logs have to be formatted in specific formats like: 
+- https://cloud.google.com/error-reporting/docs/formatting-error-messages
+- an example implementation for sl4j/logback is [here](http://stackoverflow.com/questions/37420400/how-do-i-map-my-java-app-logging-events-to-corresponding-cloud-logging-event-lev)
+- Further investigation should be done on all the functionailities of error reporting of the Stackdriver logging stack.
+- An ELK stack could still be used instead of stack driver.
+
+
  
 
 ##Dynamic Configuration
