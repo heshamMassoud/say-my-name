@@ -195,3 +195,6 @@ kubernetes master. GKE guarntees etcd's uptime.
 to the new cluster. However, with GKE its done with one command.
 7. Heapster tool for monitoring is pre-installed with the GKE cluster. 
 8. Stackdriver's monitoring and logging has support for cluster level logging. 
+
+#####Docker Registries
+Any private docker registry could be used in the kubernetes cluster to pull the docker images including nexus 3. [Here](https://blog.cloudhelix.io/using-a-private-docker-registry-with-kubernetes-f8d5f6b8f646#.56o8w13bp) is an example. However, having the nexus repository in an internal network that's not accessible publicly from the internet could be a problem. 
